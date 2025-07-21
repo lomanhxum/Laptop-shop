@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Admin Dashboard</title>
+    <style>
+        /* CSS giữ nguyên như trước */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background: #34495e;
+            border-radius: 5px;
+            display: block;
+            padding: 10px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            margin-bottom: 15px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f8f9fa;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            text-decoration: none;
+            color: white;
+            display: inline-block;
+        }
+
+        .btn-add { background: #2ecc71; }
+        .btn-edit { background: #3498db; }
+        .btn-delete { background: #e74c3c; }
+        .btn-search { background: #95a5a6; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal:target {
+            display: block;
+        }
+
+        .modal-content {
+            background: white;
+            width: 500px;
+            margin: 100px auto;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Admin Dashboard</h2>
+            <ul>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="users.html">Users</a></li>
+                <li><a href="orders.html">Orders</a></li>
+                <li><a href="order-details.html">Order Details</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="roles.html">Roles</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>Products</h1>
+                <form>
+                    <input type="text" id="search" placeholder="Search...">
+                    <button class="btn btn-search">Search</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <h2>Products</h2>
+                <a href="#add-product-modal" class="btn btn-add">Add Product</a>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Laptop Dell XPS 13</td>
+                                <td>1500.00</td>
+                                <td>Laptop</td>
+                                <td>10</td>
+                                <td>
+                                    <a href="#edit-product-modal" class="btn btn-edit">Edit</a>
+                                    <a href="#" class="btn btn-delete">Delete</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Mouse Logitech MX</td>
+                                <td>99.99</td>
+                                <td>Accessories</td>
+                                <td>50</td>
+                                <td>
+                                    <a href="#edit-product-modal" class="btn btn-edit">Edit</a>
+                                    <a href="#" class="btn btn-delete">Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="add-product-modal">
+        <div class="modal-content">
+            <h2>Add Product</h2>
+            <form>
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" name="productName" required>
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" name="price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="categoryID" required>
+                        <option value="1">Laptop</option>
+                        <option value="2">Accessories</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Supplier</label>
+                    <select name="SupplierID" required>
+                        <option value="1">Supplier A</option>
+                        <option value="2">Supplier B</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity" required>
+                </div>
+                <button class="btn btn-add">Save</button>
+                <a href="#" class="btn btn-delete">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal (Example) -->
+    <div class="modal" id="edit-product-modal">
+        <div class="modal-content">
+            <h2>Edit Product</h2>
+            <form>
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" name="productName" value="Laptop Dell XPS 13" required>
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" name="price" step="0.01" value="1500.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="categoryID" required>
+                        <option value="1" selected>Laptop</option>
+                        <option value="2">Accessories</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Supplier</label>
+                    <select name="SupplierID" required>
+                        <option value="1" selected>Supplier A</option>
+                        <option value="2">Supplier B</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity" value="10" required>
+                </div>
+                <button class="btn btn-add">Save</button>
+                <a href="#" class="btn btn-delete">Cancel</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
